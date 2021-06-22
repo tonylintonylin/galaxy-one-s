@@ -1,3 +1,4 @@
+<h3 style="text-align: center;">Instagram</h3>
 <div class="grid grid--no-gutters image-bar image-bar--{{ section.settings.section_height }}">
   {% case section.blocks.size %}
     {% when 1 %}
@@ -9,7 +10,6 @@
     {% else %}
       {%- assign column_size = 'medium-up--one-quarter' -%}
   {% endcase %}
-  <h3 style="text-align: center;">Instagram</h3>
   {% for block in section.blocks %}
     <div class="grid__item {{ column_size }} js" {{ block.shopify_attributes }}>
       {% if block.settings.link != blank %}

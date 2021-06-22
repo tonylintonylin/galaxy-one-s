@@ -1,3 +1,10 @@
+{% for tag in product.tags %}
+  {%- if tag contains 'affiliate' -%}
+    {% assign isAffiliate = true %}
+    {% assign affiliateLink = tag | split:'_' | last %}
+  {%- endif -%}
+{% endfor %}
+
 <div class="product-template__container page-width"
   id="ProductSection-{{ section.id }}"
   data-section-id="{{ section.id }}"
@@ -136,20 +143,25 @@
 
         <h1 class="product-single__title">{{ product.title }}</h1>
         <script>window.performance.mark('debut:product:title_visible');</script>
-          <div>⭐⭐⭐⭐⭐</div>
-          <div class="product__price">
-            {% include 'product-price', variant: current_variant, show_vendor: section.settings.show_vendor %}
-          </div>
-          {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
-            <div class="product__policies rte" data-product-policies>
-              {%- if cart.taxes_included -%}
-                {{ 'products.product.include_taxes' | t }}
-              {%- endif -%}
-              {%- if shop.shipping_policy.body != blank -%}
-                {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
-              {%- endif -%}
+
+          {% unless isAffiliate %}
+
+            <div>⭐⭐⭐⭐⭐</div>
+            <div class="product__price">
+              {% include 'product-price', variant: current_variant, show_vendor: section.settings.show_vendor %}
             </div>
-          {%- endif -%}
+            {%- if cart.taxes_included or shop.shipping_policy.body != blank -%}
+              <div class="product__policies rte" data-product-policies>
+                {%- if cart.taxes_included -%}
+                  {{ 'products.product.include_taxes' | t }}
+                {%- endif -%}
+                {%- if shop.shipping_policy.body != blank -%}
+                  {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+          {% endunless %}
 
           {% capture "form_classes" -%}
             product-form product-form-{{ section.id }}
@@ -216,17 +228,17 @@
                 {%- if section.settings.enable_payment_button %} product-form__item--payment-button {%- endif -%}
                 {%- if product.has_only_default_variant %} product-form__item--no-variants {%- endif -%}"
               >
-                <button type="submit" name="add"
-                  {% unless current_variant.available %} aria-disabled="true"{% endunless %}
+
+              {% unless isAffiliate %}
+                <button type="submit" name="add" {% unless current_variant.available %} aria-disabled="true" {% endunless %}
                   aria-label="{% unless current_variant.available %}{{ 'products.product.sold_out' | t }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endunless %}"
                   class="btn product-form__cart-submit{% if section.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent{% endif %}"
-                  {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
-                  data-add-to-cart>
+                  {% if settings.enable_ajax %}aria-haspopup="dialog" {% endif %} data-add-to-cart>
                   <span data-add-to-cart-text>
                     {% unless current_variant.available %}
-                      {{ 'products.product.sold_out' | t }}
+                    {{ 'products.product.sold_out' | t }}
                     {% else %}
-                      {{ 'products.product.add_to_cart' | t }}
+                    {{ 'products.product.add_to_cart' | t }}
                     {% endunless %}
                   </span>
                   <span class="hide" data-loader>
@@ -234,8 +246,14 @@
                   </span>
                 </button>
                 {% if section.settings.enable_payment_button %}
-                  {{ form | payment_button }}
+                {{ form | payment_button }}
                 {% endif %}
+
+              {% else %}
+                <a data-add-to-cart class="btn product-form__cart-submit" target="_blank" href='{{ affiliateLink }}'>SEE ON AMAZON</a>
+
+              {% endunless %}
+
               </div>
             </div>
           {% endform %}

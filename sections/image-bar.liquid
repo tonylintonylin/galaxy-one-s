@@ -1,4 +1,8 @@
-<h3 style="text-align: center;">Instagram</h3>
+<!-- <h3 style="text-align: center;">Instagram</h3> -->
+{% unless section.settings.heading == blank %}
+  <h3 style="text-align: center;">{{ section.settings.heading }}</h3>
+{% endunless %}
+
 <div class="grid grid--no-gutters image-bar image-bar--{{ section.settings.section_height }}">
   {% case section.blocks.size %}
     {% when 1 %}
@@ -248,6 +252,13 @@
           "value": "x-large"
         }
       ]
+    },
+    {
+    "type": "text",
+    "id": "heading",
+    "label": {
+    "en": "Heading"
+    }
     }
   ],
   "blocks": [

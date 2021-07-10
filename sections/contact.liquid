@@ -46,11 +46,12 @@
                     pattern="[0-9\-]*"
                     value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}">
 
+                <!-- new -->
                 {%- if section.settings.show_order_num -%}
-                <label for="{{ formId }}-orderNum">{{ 'contact.form.orderNum' | t }}</label>
-                <input type="tel" id="{{ formId }}-orderNum" name="contact[{{ 'contact.form.orderNum' | t }}]" pattern="[0-9\-]*"
-                    value="{% if form[orderNum] %}{{ form[orderNum] }}{% elsif customer %}{{ customer.orderNum }}{% endif %}">
+                    <label for="{{ formId }}-orderNum">{{ 'contact.form.orderNum' | t }}</label>
+                    <input type="text" id="{{ formId }}-orderNum" name="contact[{{ 'contact.form.orderNum' | t }}]">
                 {%- endif -%}
+                <!-- new -->
 
                 <label for="{{ formId }}-message">{{ 'contact.form.message' | t }}</label>
                 <textarea rows="10" id="{{ formId }}-message"

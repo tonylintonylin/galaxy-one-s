@@ -225,6 +225,7 @@
       "name": "Name",
       "email": "Email",
       "phone": "Phone Number",
+      "orderNum": "Order Number",
       "message": "Message",
       "submit": "Send",
       "post_success": "Thanks for contacting us. We'll get back to you as soon as possible.",
